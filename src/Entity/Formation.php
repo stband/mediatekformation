@@ -35,12 +35,12 @@ class Formation
     private ?string $videoId = null;
 
     #[ORM\ManyToOne(inversedBy: 'formations')]
-    private ?playlist $playlist = null;
+    private ?Playlist $playlist = null;
 
     /**
-     * @var Collection<int, categorie>
+     * @var Collection<int, Categorie>
      */
-    #[ORM\ManyToMany(targetEntity: categorie::class, inversedBy: 'formations')]
+    #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'formations')]
     private Collection $categories;
 
     public function __construct()
@@ -123,7 +123,7 @@ class Formation
         return $this->playlist;
     }
 
-    public function setPlaylist(?playlist $playlist): static
+    public function setPlaylist(?Playlist $playlist): static
     {
         $this->playlist = $playlist;
 
@@ -131,14 +131,14 @@ class Formation
     }
 
     /**
-     * @return Collection<int, categorie>
+     * @return Collection<int, Categorie>
      */
     public function getCategories(): Collection
     {
         return $this->categories;
     }
 
-    public function addCategory(categorie $category): static
+    public function addCategory(Categorie $category): static
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
@@ -147,7 +147,7 @@ class Formation
         return $this;
     }
 
-    public function removeCategory(categorie $category): static
+    public function removeCategory(Categorie $category): static
     {
         $this->categories->removeElement($category);
 
