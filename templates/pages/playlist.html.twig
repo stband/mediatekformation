@@ -10,8 +10,12 @@
                     {{ playlist.name }}&nbsp;
                 {% endfor %}
             <br /><br />
-            <strong>description :</strong><br />
+            <strong>nombre de formations :</strong>
+                {{ playlist.formations|length }}
+                <br><br>
+            <strong>description :</strong>
                 {{ playlist.description|nl2br }}
+                <br><br>
         </div>
         <div class="col">
             <!-- boucle sur l'affichage des formations -->
