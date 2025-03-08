@@ -1,0 +1,22 @@
+{{ form_start(formplaylists) }}
+<div>
+    <div class="row">
+        <div class="col">
+            {{ form_row(formplaylists.name) }}
+        </div>
+        <div class="col">
+            {{ form_row(formplaylists.description) }}
+        </div>
+    </div>
+</div>
+<div>
+    <div class="align-content-center justify-content-center" style="display: flex">
+        {{ form_row(formplaylists.submit) }}
+        <div class="mb-3" style="padding-left: 5rem">
+            <a href="{{ path('admin.playlists') }}" class="btn btn-secondary">
+                Annuler
+            </a>
+        </div>
+    </div>
+</div>
+{{ form_end(formplaylists) }}

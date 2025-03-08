@@ -1,0 +1,83 @@
+{% extends "baseadmin.html.twig" %}
+{% block body %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th class="text-left align-top" scope="col">
+                playlist<br />
+                <a href="{{ path('admin.playlists.sort', {champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active"><</a>
+                <a href="{{ path('admin.playlists.sort', {champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active">></a>
+                <form class="form-inline mt-1" method="POST" action="{{ path('admin.playlists.findallcontain', {champ:'name'}) }}">
+                    <div class="form-group mr-1 mb-2">
+                        <input type="text" class="sm" name="recherche"
+                               value="{% if valeur|default and not table|default %}{{ valeur }}{% endif %}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('filtre_name') }}">
+                        <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
+                    </div>
+                </form>
+            </th>
+            <th class="text-left align-top" scope="col">
+                catégories
+                <form class="form-inline mt-1" method="POST" action="{{ path('admin.playlists.findallcontain', {champ:'id', table:'categories'}) }}">
+                    <select class="form-select form-select-sm" name="recherche" id="recherche" onchange="this.form.submit()">
+                        <option value=""></option>
+                        {% for categorie in categories %}
+                            <option
+                                    {% if valeur|default and valeur==categorie.id %}
+                                        selected
+                                    {% endif %}
+                                    value="{{ categorie.id }}">{{ categorie.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </th>
+            <th class="text-center align-top" scope="col">
+                nb formations<br/>
+                <a href="{{ path('admin.playlists.sort', {champ:'count', ordre:'ASC'}) }}" class="btn btn-info btn-sm active"><</a>
+                <a href="{{ path('admin.playlists.sort', {champ:'count', ordre:'DESC'}) }}" class="btn btn-info btn-sm active">></a>
+            </th>
+            <th class="text-left align-top" scope="col">
+                <p style="margin: 0; width: 100%">actions</p>
+                <a href="{{ path('admin.playlists.add') }}" class="btn btn-info btn-sm active">créer une playlist</a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- boucle sur les playlists -->
+        {% if playlists|length > 0 %}
+            {% for k in 0..playlists|length-1 %}
+                <tr class="align-middle">
+                    <td>
+                        <h5 class="text-info">
+                            {{ playlists[k].name }}
+                        </h5>
+                    </td>
+                    <td class="text-left">
+                        {% set categories = playlists[k].categoriesplaylist %}
+                        {% if categories|length > 0  %}
+                            {% for c in 0..categories|length-1 %}
+                                &nbsp;{{ categories[c] }}
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+                    {% set nbFormations = playlists[k].formationsCount %}
+                    <td class="text-center">
+                        <h5>
+                            {{ nbFormations }}
+                        </h5>
+                    </td>
+                    <td class="text-left">
+                        <a href="{{ path('admin.playlists.edit', { 'id': playlists[k].id }) }}" class="btn btn-secondary">Editer</a>
+                        {% if nbFormations > 0 %}
+                            <button class="btn btn-danger" disabled>Supprimer</button>
+                        {% else %}
+                            <a href="{{ path('admin.playlists.delete', { 'id': playlists[k].id }) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer {{ playlists[k].name }} ?')">Supprimer</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+{% endblock %}
