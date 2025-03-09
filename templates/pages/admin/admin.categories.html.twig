@@ -1,0 +1,61 @@
+{% extends "baseadmin.html.twig" %}
+{% block body %}
+    
+    {# Affiche les messages flash #}
+        {% for message in app.flashes('categories_success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('categories_error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th class="text-left align-top" scope="col">
+                catégorie<br />
+                <a href="{{ path('admin.categories.sort', { ordre:'ASC' }) }}" class="btn btn-info btn-sm active"><</a>
+                <a href="{{ path('admin.categories.sort', { ordre:'DESC' }) }}" class="btn btn-info btn-sm active">></a>
+                <form class="form-inline mt-1" method="POST" action="{{ path('admin.categories.findbyname') }}">
+                    <div class="form-group mr-1 mb-2">
+                        <input type="text" class="sm" name="recherche"
+                               value="{% if valeur|default %}{{ valeur }}{% endif %}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('filtre_title') }}">
+                        <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
+                    </div>
+                </form>
+            </th>
+            <th class="text-left align-top" scope="col" style="width: 350px">
+                actions
+                <form class="mt-1" method="POST" action="{{ path('admin.categories.add') }}">
+                    <div class="mr-1 mb-2 align-items-baseline">
+                        <input type="text" class="sm" name="name">
+                        <button type="submit" class="btn btn-info mb-2 btn-sm" style="margin-left: 0.5rem">créer la catégorie</button>
+                    </div>
+                </form>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for categorie in categories %}
+            <tr class="align-middle">
+                <td>
+                    <h5 class="text-info">
+                        {{ categorie.name }}
+                    </h5>
+                </td>
+                <td class="text-left">
+                    <div>
+                        <a href="{{ path('admin.categories.delete', { 'id': categorie.id }) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer {{ categorie.name }} ?')">Supprimer</a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
