@@ -7,6 +7,9 @@
         <!-- titre -->
         <div class="text-left" style="display: flex">
             <img src="{{ app.request.getBasePath()~'/banniere.jpg' }}" alt="Bannière" >
+            {% if app.user %}
+                <a href="{{ path('logout') }}" class="btn btn-secondary" style="margin: auto 5rem auto auto">Se déconnecter</a>
+            {% endif %}
         </div>
         <h1>Administration du site</h1>
         <!-- menu -->
