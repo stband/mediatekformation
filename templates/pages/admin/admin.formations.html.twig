@@ -1,5 +1,19 @@
 {% extends "baseadmin.html.twig" %}
 {% block body %}
+
+    {# Affiche les messages flash #}
+        {% for message in app.flashes('formations_success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('formations_error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
     <table class="table table-striped">
         <thead>
         <tr>

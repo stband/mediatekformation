@@ -98,6 +98,8 @@ class AdminPlaylistsController extends AbstractController
             return new Response("Cette playlist ne peut être supprimée car elle n'est pas vide.", Response::HTTP_FORBIDDEN);
 
         $this->playlistRepository->remove($playlist);
+        $this->addFlash('playlists_success', "La playlist « {$playlist->getName()} » a été supprimée avec succès.");
+
         return $this->redirectToRoute('admin.playlists');
     }
 
@@ -115,6 +117,7 @@ class AdminPlaylistsController extends AbstractController
         $formPlaylists->handleRequest($request);
         if ($formPlaylists->isSubmitted() && $formPlaylists->isValid()) {
             $this->playlistRepository->addOrEdit($playlist);
+            $this->addFlash('playlists_success', "La playlist « {$playlist->getName()} » a bien été modifiée.");
             return $this->redirectToRoute('admin.playlists');
         }
 
@@ -137,6 +140,7 @@ class AdminPlaylistsController extends AbstractController
         $formPlaylists->handleRequest($request);
         if ($formPlaylists->isSubmitted() && $formPlaylists->isValid()) {
             $this->playlistRepository->addOrEdit($playlist);
+            $this->addFlash('playlists_success', "La playlist « {$playlist->getName()} » a bien été ajoutée.");
             return $this->redirectToRoute('admin.playlists');
         }
 

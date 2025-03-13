@@ -88,7 +88,7 @@ class AdminFormationsController extends AbstractController
         $formation = $this->formationRepository->find($id);
 
         if (!$formation) {
-            $this->addFlash('danger', 'La formation demandée est introuvable.');
+            $this->addFlash('formations_error', "La formation demandée est introuvable.");
             return $this->redirectToRoute('admin.formations');
         }
 
@@ -99,7 +99,7 @@ class AdminFormationsController extends AbstractController
 
         $this->formationRepository->remove($formation);
 
-        $this->addFlash('success', 'La formation a été supprimée avec succès.');
+        $this->addFlash('formations_success', "La formation « {$formation->getTitle()} » a été supprimée avec succès.");
 
         return $this->redirectToRoute('admin.formations');
     }
@@ -115,6 +115,7 @@ class AdminFormationsController extends AbstractController
         $formFormations->handleRequest($request);
         if ($formFormations->isSubmitted() && $formFormations->isValid()) {
             $this->formationRepository->addOrEdit($formation);
+            $this->addFlash('formations_success', "La formation « {$formation->getTitle()} » a bien été modifiée.");
             return $this->redirectToRoute('admin.formations');
         }
 
@@ -135,6 +136,7 @@ class AdminFormationsController extends AbstractController
         $formFormation->handleRequest($request);
         if ($formFormation->isSubmitted() && $formFormation->isValid()) {
             $this->formationRepository->addOrEdit($formation);
+            $this->addFlash('formations_success', "La formation « {$formation->getTitle()} » a bien été ajoutée.");
             return $this->redirectToRoute('admin.formations');
         }
 
